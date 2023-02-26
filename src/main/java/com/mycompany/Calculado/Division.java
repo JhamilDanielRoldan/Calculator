@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.prueba;
+package com.mycompany.Calculado;
 
 import java.util.ArrayList;
 
@@ -12,38 +12,39 @@ import java.util.ArrayList;
  */
 class Division extends Operador {
 
-    ArrayList<Operador> multiplicaciones;
-
+    ArrayList<Multiplicacion> multiplicaciones;
+    ArrayList<Potenciacion> potenciaciones;
     public Division(String entrada) {
         super(entrada);
         multiplicaciones = new ArrayList<>();
+        potenciaciones=new ArrayList<>();
         if (entrada.contains("*")) {
             Operacion.operar(entrada, (ArrayList<Operador>) (Object) multiplicaciones, "\\*", new Multiplicacion(""));
         }
-
+        else if(entrada.contains("^")){
+            Operacion.operar(entrada, (ArrayList<Operador>) (Object) potenciaciones, "\\^", new Potenciacion("")); 
+        }
+       // System.out.println(potenciaciones);
     }
 
     @Override
     public double resultado() {
         if (!multiplicaciones.isEmpty()) {
-            return multiplicar();
-        } else {
+            //TODO puede que haya un error por esto beta
+            return Operacion.multiplicar(multiplicaciones);
+        } 
+        else if(!potenciaciones.isEmpty()){
+            return Operacion.potenciar(potenciaciones);
+        } 
+        else {
             return super.resultado();
         }
     }
 
-    public double multiplicar() {
-        double numero;
-        numero = multiplicaciones.get(0).resultado();
-        for (int n = 1; n < multiplicaciones.size(); n++) {
-            numero *= multiplicaciones.get(n).resultado();
-        }
-        return numero;
-    }
+   
 
     @Override
     public Operador opera(String entrada) {
-        // TODO: Implement this method
         return new Division(entrada);
     }
 
@@ -51,6 +52,8 @@ class Division extends Operador {
     public String toString() {
         if (!multiplicaciones.isEmpty()) {
             return "multiplicacion:" + multiplicaciones.toString();
+        } else if (!potenciaciones.isEmpty()) {
+            return "potenciasion:" + potenciaciones.toString();
         } else {
             return super.toString();
         }

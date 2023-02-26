@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.prueba;
+package com.mycompany.Calculado;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -15,7 +16,7 @@ class Operacion
 {
 	public static void operar(String entrada, ArrayList<Operador> lista, String operando, Operador opr)
 	{
-		String corrupt,operis[],corregidor[];
+		String operis[];
 		Operador operacion;
 		operis = entrada.split(operando);
                 
@@ -24,9 +25,10 @@ class Operacion
 			operacion = opr.opera(oper);
 			lista.add(operacion);
 		}
+                //System.out.println(lista);
 
 	}
-        public double sumar(ArrayList <Resta> sumas)
+        public static double sumar(ArrayList <Suma> sumas)
 	{
 		double numero;
 		numero = sumas.get(0).resultado();
@@ -36,7 +38,7 @@ class Operacion
 		}
 		return numero;
 	}
-	public double restar(ArrayList <Resta> restas) {
+	public static double restar(ArrayList <Resta> restas) {
 
         double numero;
         numero = restas.get(0).resultado();
@@ -45,7 +47,7 @@ class Operacion
         }
         return numero;
     }
-	public double multiplicar(ArrayList <Multiplicacion> multiplicaciones)
+	public static double multiplicar(ArrayList <Multiplicacion> multiplicaciones)
 	{
 		double numero;
 		numero = multiplicaciones.get(0).resultado();
@@ -55,7 +57,7 @@ class Operacion
 		}
 		return numero;
 	}
-	public double dividir(ArrayList <Division> divisiones)
+	public static double dividir(ArrayList <Division> divisiones)
 	{
 		double numero;
 		numero = divisiones.get(0).resultado();
@@ -65,4 +67,15 @@ class Operacion
 		}
 		return numero;
 	}
+
+    public static double potenciar(ArrayList<Potenciacion> potenciaciones) {
+        double numero;
+		numero = potenciaciones.get(0).resultado();
+		for (int n=1; n < potenciaciones.size(); n++)
+		{
+			numero =Math.pow(numero,potenciaciones.get(n).resultado());
+		}
+		return numero;
+    }
+        
 }

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.prueba;
+package com.mycompany.Calculado;
 
 import java.util.ArrayList;
 
@@ -15,19 +15,23 @@ class Suma extends Operador {
     ArrayList<Resta> restas;
     ArrayList<Multiplicacion> multiplicaciones;
     ArrayList<Division> divisiones;
+    ArrayList<Potenciacion>potenciaciones;
 
     public Suma(String entrada) {
         super(entrada);
         restas = new ArrayList<>();
         multiplicaciones = new ArrayList<>();
         divisiones = new ArrayList<>();
+        potenciaciones=new ArrayList<>();
          if (entrada.contains("-")) {
             Operacion.operar(entrada, (ArrayList<Operador>) (Object) restas, "-", new Resta(""));
         } else if (entrada.contains("*")) {
             Operacion.operar(entrada, (ArrayList<Operador>) (Object) multiplicaciones, "\\*", new Multiplicacion(""));
         } else if (entrada.contains("/")) {
             Operacion.operar(entrada, (ArrayList<Operador>) (Object) divisiones, "/", new Division(""));
-
+        }
+        else if(entrada.contains("^")){
+            Operacion.operar(entrada, (ArrayList<Operador>) (Object) potenciaciones, "\\^", new Potenciacion("")); 
         }
     }
 
@@ -40,44 +44,20 @@ class Suma extends Operador {
     @Override
     public double resultado() {
         if (!restas.isEmpty()) {
-            return restar();
+            return Operacion.restar(restas);
         } else if (!multiplicaciones.isEmpty()) {
-            return multiplicar();
+            return Operacion.multiplicar(multiplicaciones);
         } else if (!divisiones.isEmpty()) {
-            return dividir();
-        } else {
+            return Operacion.dividir(divisiones);
+        }else if(!potenciaciones.isEmpty()){
+            return Operacion.potenciar(potenciaciones);
+        }
+        else {
             return super.result;
         }
     }
 
-    public double restar() {
-
-        double numero;
-        numero = restas.get(0).resultado();
-        for (int n = 1; n < restas.size(); n++) {
-            numero -= restas.get(n).resultado();
-
-        }
-        return numero;
-    }
-
-    public double multiplicar() {
-        double numero;
-        numero = multiplicaciones.get(0).resultado();
-        for (int n = 1; n < multiplicaciones.size(); n++) {
-            numero *= multiplicaciones.get(n).resultado();
-        }
-        return numero;
-    }
-
-    public double dividir() {
-        double numero;
-        numero = divisiones.get(0).resultado();
-        for (int n = 1; n < divisiones.size(); n++) {
-            numero /= divisiones.get(n).resultado();
-        }
-        return numero;
-    }
+    
 
     @Override
     public String toString() {
@@ -88,7 +68,10 @@ class Suma extends Operador {
             return "multiplicacion:" + multiplicaciones.toString();
         } else if (!divisiones.isEmpty()) {
             return "division:" + divisiones.toString();
-        } else {
+        }else if (!potenciaciones.isEmpty()) {
+            return "potenciasion:" + potenciaciones.toString();
+        } 
+        else {
             return super.toString();
         }
     }
