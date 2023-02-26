@@ -21,6 +21,7 @@ public class VistaCalculadora extends javax.swing.JFrame {
         initComponents();
         calc1 = new Calculadora("HP");
         historic = new ArrayList<>();
+       
     }
 
     /**
@@ -48,10 +49,12 @@ public class VistaCalculadora extends javax.swing.JFrame {
         num4 = new javax.swing.JButton();
         num5 = new javax.swing.JButton();
         num6 = new javax.swing.JButton();
+        restroseso = new javax.swing.JButton();
         num7 = new javax.swing.JButton();
         num8 = new javax.swing.JButton();
         num9 = new javax.swing.JButton();
         btnResta = new javax.swing.JButton();
+        punto = new javax.swing.JButton();
         btnSuma = new javax.swing.JButton();
         btnMultiplicacion = new javax.swing.JButton();
         btnDivision = new javax.swing.JButton();
@@ -59,7 +62,6 @@ public class VistaCalculadora extends javax.swing.JFrame {
         btnBorrador = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
-        restroseso = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         resultadoTxt = new javax.swing.JTextArea();
 
@@ -133,6 +135,14 @@ public class VistaCalculadora extends javax.swing.JFrame {
         });
         jPanel1.add(num6);
 
+        restroseso.setText("⌫");
+        restroseso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                restrosesoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(restroseso);
+
         num7.setText("7");
         num7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,6 +175,14 @@ public class VistaCalculadora extends javax.swing.JFrame {
         });
         jPanel1.add(btnResta);
 
+        punto.setText(".");
+        punto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                puntoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(punto);
+
         btnSuma.setText("+");
         btnSuma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -190,6 +208,11 @@ public class VistaCalculadora extends javax.swing.JFrame {
         jPanel1.add(btnDivision);
 
         btnResultado.setText("=");
+        btnResultado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResultadoActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnResultado);
 
         btnBorrador.setText("CE");
@@ -204,15 +227,13 @@ public class VistaCalculadora extends javax.swing.JFrame {
 
         jButton13.setText("jButton13");
 
-        restroseso.setText("⌫");
-        restroseso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                restrosesoActionPerformed(evt);
-            }
-        });
-
         resultadoTxt.setColumns(20);
         resultadoTxt.setRows(5);
+        resultadoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                resultadoTxtKeyReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(resultadoTxt);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -220,34 +241,33 @@ public class VistaCalculadora extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel1))
-                .addGap(106, 106, 106)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(entrada1)
-                    .addComponent(entrada2)
-                    .addComponent(resultado, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(292, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(jButton13)
-                        .addGap(19, 19, 19))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1))
+                        .addGap(106, 106, 106)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(entrada1)
+                            .addComponent(entrada2)
+                            .addComponent(resultado, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(restroseso, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton12)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(120, 120, 120)
+                                .addComponent(jButton13)
+                                .addGap(19, 19, 19))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton12)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -275,32 +295,27 @@ public class VistaCalculadora extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton12)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addComponent(jButton13))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(14, 14, 14))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(restroseso, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(167, 167, 167))))
+                        .addComponent(jButton12))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton13))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+String result = "";
     private void btnSumaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSumaActionPerformed
-        int suma, numero1, numero2;
-        numero1 = Integer.parseInt(entrada1.getText());
-        numero2 = Integer.parseInt(entrada2.getText());
-        suma = calc1.sumar(numero1, numero2);
-        resultado.setText(suma + "");
-        historic.add(suma + "");
-        agregarHistoria();
+        result = resultadoTxt.getText();
+        resultadoTxt.setText("");
+        result+="+";
+        
     }//GEN-LAST:event_btnSumaActionPerformed
 
     private void btnRestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestaActionPerformed
@@ -308,9 +323,8 @@ public class VistaCalculadora extends javax.swing.JFrame {
         numero1 = Integer.parseInt(entrada1.getText());
         numero2 = Integer.parseInt(entrada2.getText());
         resta = calc1.restar(numero1, numero2);
-        resultado.setText(resta + "");
-        historic.add(resta + "");
-        agregarHistoria();
+
+        agregarHistoria(resta + "");
     }//GEN-LAST:event_btnRestaActionPerformed
 
     private void btnMultiplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultiplicacionActionPerformed
@@ -319,8 +333,8 @@ public class VistaCalculadora extends javax.swing.JFrame {
         numero2 = Integer.parseInt(entrada2.getText());
         multiplicacion = calc1.multiplicar(numero1, numero2);
         resultado.setText(multiplicacion + "");
-        historic.add(multiplicacion + "");
-        agregarHistoria();
+
+        agregarHistoria(multiplicacion + "");
     }//GEN-LAST:event_btnMultiplicacionActionPerformed
 
     private void btnDivisionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivisionActionPerformed
@@ -330,16 +344,15 @@ public class VistaCalculadora extends javax.swing.JFrame {
         numero2 = Integer.parseInt(entrada2.getText());
         try {
             division = calc1.division(numero1, numero2);
-            resultado.setText(division + "");
-            historic.add(division + "");
-            agregarHistoria();
+            agregarHistoria(division + "");
         } catch (Exception es) {
             JOptionPane.showMessageDialog(null, "No se permite dividendo 0");
         }
     }//GEN-LAST:event_btnDivisionActionPerformed
 
     private void btnBorradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorradorActionPerformed
-        // TODO add your handling code here:
+       result="";
+       resultadoTxt.setText("");
     }//GEN-LAST:event_btnBorradorActionPerformed
 
     private void num0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num0ActionPerformed
@@ -387,6 +400,34 @@ public class VistaCalculadora extends javax.swing.JFrame {
         borrar_dato();
     }//GEN-LAST:event_restrosesoActionPerformed
 
+    private void btnResultadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResultadoActionPerformed
+        // TODO add your handling code here:
+        if(result.charAt(result.length()-1)=='+'){
+            double resulta;
+            String historico;
+            historico=result;
+            resulta=Double.parseDouble(result.substring(0,result.length()-1));
+            result=resultadoTxt.getText();
+            resulta+=Double.parseDouble(result);
+            historico+=result+"="+resulta;
+            agregarHistoria(historico);
+            resultadoTxt.setText(resulta+"");
+        }
+    }//GEN-LAST:event_btnResultadoActionPerformed
+
+    private void puntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puntoActionPerformed
+        agregar_dato(".");
+    }//GEN-LAST:event_puntoActionPerformed
+
+    private void resultadoTxtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_resultadoTxtKeyReleased
+         if(evt.getKeyChar()=='+'){
+        result = resultadoTxt.getText();
+        resultadoTxt.setText("");
+        result+="+";
+        
+        }
+    }//GEN-LAST:event_resultadoTxtKeyReleased
+
     private void agregar_dato(String numero) {
         String pantalla, izqui, der;
         int posicionCursor;
@@ -396,20 +437,24 @@ public class VistaCalculadora extends javax.swing.JFrame {
         der = pantalla.substring(posicionCursor, pantalla.length());
         resultadoTxt.setText(izqui + numero + der);
     }
+
     private void borrar_dato() {
         String pantalla, izqui, der;
         int posicionCursor;
         pantalla = resultadoTxt.getText();
+        if(!pantalla.equals("")){
         posicionCursor = resultadoTxt.getCaretPosition();
-        izqui = pantalla.substring(0, posicionCursor-1);
+        izqui = pantalla.substring(0, posicionCursor - 1);
         der = pantalla.substring(posicionCursor, pantalla.length());
         resultadoTxt.setText(izqui + der);
+        }
     }
 
     ArrayList<String> historic;
 
-    private void agregarHistoria() {
-        historico.setModel(new javax.swing.AbstractListModel<String>() {
+    private void agregarHistoria(String dato) {
+        historic.add(dato);
+         historico.setModel(new javax.swing.AbstractListModel<String>() {
             public int getSize() {
                 return historic.size();
             }
@@ -484,10 +529,10 @@ public class VistaCalculadora extends javax.swing.JFrame {
     private javax.swing.JButton num7;
     private javax.swing.JButton num8;
     private javax.swing.JButton num9;
+    private javax.swing.JButton punto;
     private javax.swing.JButton restroseso;
     private javax.swing.JLabel resultado;
     private javax.swing.JTextArea resultadoTxt;
     // End of variables declaration//GEN-END:variables
 
-    
 }
