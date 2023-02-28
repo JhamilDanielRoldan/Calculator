@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Calculator {
 
     public static void main(String[] args) {
-        String entrada = "cos(5^(9*9+8/-cos(9)))+(8+9)";
+        String entrada = ")";
         System.out.println(resul(entrada));
             
     }

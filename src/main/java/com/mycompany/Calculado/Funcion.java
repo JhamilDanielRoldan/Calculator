@@ -1,6 +1,7 @@
 package com.mycompany.Calculado;
 
 import java.util.ArrayList;
+import java.util.FormatterClosedException;
 
 /**
  *
@@ -9,21 +10,21 @@ import java.util.ArrayList;
 public class Funcion {
 
     private String entrada;
-    String[] operaciones = {"cos", "sin","tan","pan"};
+    String[] operaciones = {"cos", "sin", "tan", "pan"};
 
     public Funcion(String entrada) {
-        entrada=convertParent(entrada);
-        System.out.println(entrada);
+        verificarParentesis(entrada);
+        entrada = convertParent(entrada);
         for (int n = 0; n < operaciones.length; n++) {
-            entrada = evaluar(operaciones[n],entrada);
+            entrada = evaluar(operaciones[n], entrada);
         }
         this.entrada = entrada;
 
     }
 
-    private String evaluar(String funcion,String ent) {
+    private String evaluar(String funcion, String ent) {
         while (ent.contains(funcion)) {
-            ent = funcion(ent,funcion);
+            ent = funcion(ent, funcion);
         }
         return ent;
     }
@@ -32,8 +33,8 @@ public class Funcion {
         return entrada;
     }
 
-    private String funcion(String entrada,String funcion) {
-        ArrayList<ArrayList<Object>> mat = matriz(entrada,funcion);
+    private String funcion(String entrada, String funcion) {
+        ArrayList<ArrayList<Object>> mat = matriz(entrada, funcion);
         // System.out.println(mat);
         Operando op;
         double resultado;
@@ -52,16 +53,16 @@ public class Funcion {
             resultado = Math.cos(op.resultado());
         } else if (mat.get(n - 1).get(0).equals("sin(")) {
             resultado = Math.sin(op.resultado());
-        }  else if (mat.get(n - 1).get(0).equals("tan(")) {
+        } else if (mat.get(n - 1).get(0).equals("tan(")) {
             resultado = Math.tan(op.resultado());
-        }else{
-        resultado = op.resultado();
+        } else {
+            resultado = op.resultado();
         }
         resulta = entrada.substring(0, (Integer) mat.get(n - 1).get(1) - funcion.length()) + resultado + entrada.substring((Integer) mat.get(n).get(1) + 1, entrada.length());
         return resulta;
     }
 
-    private ArrayList<ArrayList<Object>> matriz(String entrada,String funcion) {
+    private ArrayList<ArrayList<Object>> matriz(String entrada, String funcion) {
         ArrayList<ArrayList<Object>> fanci;
         String nombreClase = funcion;
         fanci = new ArrayList<>();
@@ -104,38 +105,56 @@ public class Funcion {
     }
 
     private String convertParent(String entrada) {
-        String salida="";
-        for(int n=0; n<entrada.length(); n++){
-            if(entrada.charAt(n)=='('){
-               if(n==0){
-                   salida+="pan";
-               }else{
-                if(!operaciones(entrada.charAt(n-1))){
-                    salida+=entrada.charAt(n);
-                }
-                else{
-                    salida+="pan(";
-                }
-               }
-                
-                
-                
+        String salida = "";
+        salida = entrada;
+        do {
+            salida = salida.replace("((", "(pan(");
+        } while (salida.contains("(("));
+
+        salida = salida.replace("+(", "+pan(");
+        salida = salida.replace("-(", "-pan(");
+        salida = salida.replace("/(", "/pan(");
+        salida = salida.replace("^(", "^pan(");
+        if (entrada.charAt(0) == '(') {
+            salida = "pan" + salida;
+        }
+        System.out.println("INFO:Funcion y parentesis: " + salida);
+        return salida;
+    }
+
+    public boolean operaciones(char entrada) {
+        char[] op = {'+', '-', '*', '/', '^'};
+        boolean salida = false;
+        for (char f : op) {
+            if (f == entrada) {
+                salida = true;
             }
-            else{
-                salida+=entrada.charAt(n);
-            }
-            
         }
         return salida;
     }
-    public boolean operaciones(char entrada) {
-       char[] op={'+','-','*','/','^'};
-       boolean salida=false;
-       for(char f:op){
-           if(f==entrada){
-               salida=true;
-           }
-       }
-       return salida;
+
+    private void verificarParentesis(String entrada) {
+
+        char[] ent = entrada.toCharArray();
+        ArrayList<Character> parentesis = new ArrayList<>();
+        for (char letr : ent) {
+            if (letr == '(') {
+                parentesis.add(')');
+            } else if (letr == ')') {
+                if (!parentesis.isEmpty()) {
+                    char removido = parentesis.remove(parentesis.size() - 1);
+
+                    if (removido != ')') {
+                        throw new NumberFormatException("error con parentesis");
+                    }
+                } else {
+                    throw new NumberFormatException("error con parentesis");
+                }
+            }
+        }
+        if (parentesis.size() != 0) {
+            throw new NumberFormatException("error con parentesis");
+        }
     }
+
 }

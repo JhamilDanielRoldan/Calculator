@@ -22,7 +22,7 @@ public class VistaCalculadora extends javax.swing.JFrame {
         initComponents();
         calc1 = new Calculadora("HP");
         historic = new ArrayList<>();
-       
+
     }
 
     /**
@@ -36,8 +36,7 @@ public class VistaCalculadora extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        resultadoTxt = new javax.swing.JTextArea();
+        resultadoTxt = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         num0 = new javax.swing.JButton();
         num1 = new javax.swing.JButton();
@@ -73,11 +72,18 @@ public class VistaCalculadora extends javax.swing.JFrame {
 
         jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
 
-        resultadoTxt.setColumns(20);
-        resultadoTxt.setRows(5);
-        jScrollPane2.setViewportView(resultadoTxt);
-
-        jPanel4.add(jScrollPane2);
+        resultadoTxt.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        resultadoTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                resultadoTxtFocusLost(evt);
+            }
+        });
+        resultadoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                resultadoTxtKeyPressed(evt);
+            }
+        });
+        jPanel4.add(resultadoTxt);
 
         jPanel1.setLayout(new java.awt.GridLayout(0, 4));
 
@@ -290,7 +296,7 @@ public class VistaCalculadora extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-String result = "";
+
     private void btnSumaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSumaActionPerformed
         agregar_dato("+");
     }//GEN-LAST:event_btnSumaActionPerformed
@@ -300,7 +306,7 @@ String result = "";
     }//GEN-LAST:event_btnRestaActionPerformed
 
     private void btnMultiplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultiplicacionActionPerformed
-       agregar_dato("*");
+        agregar_dato("*");
     }//GEN-LAST:event_btnMultiplicacionActionPerformed
 
     private void btnDivisionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivisionActionPerformed
@@ -309,8 +315,8 @@ String result = "";
     }//GEN-LAST:event_btnDivisionActionPerformed
 
     private void btnBorradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorradorActionPerformed
-       result="";
-       resultadoTxt.setText("");
+        resultadoTxt.setText("");
+        posicionCursor=0;
     }//GEN-LAST:event_btnBorradorActionPerformed
 
     private void num0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num0ActionPerformed
@@ -359,15 +365,7 @@ String result = "";
     }//GEN-LAST:event_restrosesoActionPerformed
 
     private void btnResultadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResultadoActionPerformed
-  try{
-            double resulta;
-            String historico=resultadoTxt.getText();
-            resulta=Calculator.resul(historico);
-            historico=historico+"="+resulta;
-            agregarHistoria(historico);
-  }catch(Exception es){
-      JOptionPane.showMessageDialog(null, "Tu Operacion esta mal puesta por favor verifica lo que pusiste");
-  }
+        resultado();
     }//GEN-LAST:event_btnResultadoActionPerformed
 
     private void puntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puntoActionPerformed
@@ -401,34 +399,48 @@ String result = "";
 
     private void historicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historicoMouseClicked
         // TODO add your handling code here:
-        if(!historico.getSelectedValue().equals("")){
-            
-                resultadoTxt.setText(historico.getSelectedValue().split("=")[0]);
+        try{
+        if (!historico.getSelectedValue().equals("")) {
+
+            resultadoTxt.setText(historico.getSelectedValue().split("=")[0]);
+        } else {
+            resultadoTxt.setText("");
         }
-        else{
-             resultadoTxt.setText("");
+        }catch(Exception es){
+            
         }
     }//GEN-LAST:event_historicoMouseClicked
+int posicionCursor=0;
+    private void resultadoTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_resultadoTxtFocusLost
+        posicionCursor=resultadoTxt.getCaretPosition();
+    }//GEN-LAST:event_resultadoTxtFocusLost
+
+    private void resultadoTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_resultadoTxtKeyPressed
+      if (evt.getKeyCode() == 10) {
+          resultado();
+      }
+    }//GEN-LAST:event_resultadoTxtKeyPressed
 
     private void agregar_dato(String numero) {
         String pantalla, izqui, der;
-        int posicionCursor;
+        
         pantalla = resultadoTxt.getText();
-        posicionCursor = resultadoTxt.getCaretPosition();
         izqui = pantalla.substring(0, posicionCursor);
         der = pantalla.substring(posicionCursor, pantalla.length());
         resultadoTxt.setText(izqui + numero + der);
+        posicionCursor++;
+        
     }
 
     private void borrar_dato() {
         String pantalla, izqui, der;
-        int posicionCursor;
+       
         pantalla = resultadoTxt.getText();
-        if(!pantalla.equals("")){
-        posicionCursor = resultadoTxt.getCaretPosition();
-        izqui = pantalla.substring(0, posicionCursor - 1);
-        der = pantalla.substring(posicionCursor, pantalla.length());
-        resultadoTxt.setText(izqui + der);
+        if (!pantalla.equals("")) {
+            izqui = pantalla.substring(0, posicionCursor - 1);
+            der = pantalla.substring(posicionCursor, pantalla.length());
+            resultadoTxt.setText(izqui + der);
+            posicionCursor--;
         }
     }
 
@@ -436,7 +448,7 @@ String result = "";
 
     private void agregarHistoria(String dato) {
         historic.add(dato);
-         historico.setModel(new javax.swing.AbstractListModel<String>() {
+        historico.setModel(new javax.swing.AbstractListModel<String>() {
             public int getSize() {
                 return historic.size();
             }
@@ -499,7 +511,6 @@ String result = "";
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton leftpar;
     private javax.swing.JButton num0;
     private javax.swing.JButton num1;
@@ -513,8 +524,26 @@ String result = "";
     private javax.swing.JButton num9;
     private javax.swing.JButton punto;
     private javax.swing.JButton restroseso;
-    private javax.swing.JTextArea resultadoTxt;
+    private javax.swing.JTextField resultadoTxt;
     private javax.swing.JButton rigthpa;
     // End of variables declaration//GEN-END:variables
+
+    private void resultado() {
+        try {
+            double resulta;
+            if(!resultadoTxt.equals("")){
+            String historico = resultadoTxt.getText();
+            resulta = Calculator.resul(historico);
+            historico = historico + "=" + resulta;
+            agregarHistoria(historico);
+            }
+        }
+        catch(NumberFormatException a){
+             JOptionPane.showMessageDialog(null, a.getMessage());
+        }
+        catch (Exception es) {
+            JOptionPane.showMessageDialog(null, "ocurrio un error inesperado llame a soporte");
+        }
+    }
 
 }
